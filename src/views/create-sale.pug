@@ -1,0 +1,202 @@
+extends ../views/layout/layout.pug
+
+block content
+  section.content
+    .container-fluid
+      .row
+        .col-md-6
+          .card.card-primary
+            .card-header
+              h3.card-title Sale
+            form(action = '/create-sale', method = 'POST', id = 'createsale')
+              .card-body
+                .form-group 
+                  label Mã sản phẩm
+                  if(book && book.length)
+                    select.custom-select(name='bookId')
+                      option(value="") Mã sản phẩm
+                        each ca in book
+                          option(value =ca.id,id='masp') !{ca.masp}
+                    span(id = 'error_masp')
+                .form-group 
+                  label Sale
+                  input.form-control(type='text',name = 'sale' placeholder='Nhập Sale ... -100%,...', id = 'sale')
+                  span(id = 'error_sale')
+                //- .form-group 
+                //-     label Sale
+                //-     input.form-control(type='text',name = 'sale' placeholder='Enter Sale', id = 'sale')
+                //-     span(id = 'error_sale')
+              .card-footer
+                button.btn.btn-primary(type='submit') Tạo      
+          if(view && view.length)
+            table.table.table-hover.card-primary
+              thead
+                tr
+                  th ID
+                  th Sản phẩm
+                  th Tiêu đề
+                  th Giá thành
+                  th Sale
+                  th Ngày tạo
+                  th Ngày sửa
+                  th
+                  th
+              tbody
+              each a in view
+                each i in a.sales
+                  tr(id = 'xoasale'+a.id)
+                    td #{a.id}
+                    td 
+                      img(src="/uploads/"+a.image, alt="", style = "width : 50px; height: 30px")
+                    td #{a.title}
+                    //- td #{a.namecategory}
+                    td #{a.cost}
+                    td #{i.sale}
+                    td #{a.createdAt}
+                    td #{a.updatedAt}
+                    td 
+                      button.btn.btn-danger(type='button', style = "background: green;" )
+                        span.glyphicon.glyphicon
+                          a(href="/create-sale/"+a.id, style = "color: white") Sửa 
+                    td 
+                      button.btn.btn-danger(type='button', onclick = "xoasale("+a.id+","+i.id+")")
+                        span.glyphicon.glyphicon-remove
+                        |  Xóa
+        .col-md-6
+          .card.card-primary
+            .card-header
+              h3.card-title Mã giảm giá
+            form(action = '/create-magiamgia', method = 'POST', id = 'maiamgia')
+              .card-body
+                .form-group 
+                  label Mã giảm giá
+                  input.form-control(type='text',name = 'magiamgia' placeholder='Nhập Mã giảm giá', id = 'magiamgia')
+                  span(id = 'error_magiamgia')
+                .form-group 
+                  label Số tiền giảm
+                  input.form-control(type='text',name = 'sotiengiam' placeholder='Nhập Số tiền giảm', id = 'sotiengiam')
+                  span(id = 'error_sotiengiam')
+              .card-footer
+                button.btn.btn-primary(type='submit') Tạo   
+          if(magiamgia && magiamgia.length > 0)
+            table.table.table-hover.card-primary
+              thead
+              tr
+                th ID
+                th Mã giảm giá
+                th Trạng thái
+                th Số tiền giảm
+                th Ngày tạo
+                th Ngày sửa
+                th
+                th
+              tbody
+                each ma in magiamgia
+                  tr(id = 'xoama'+ma.id)
+                    td #{ma.id}
+                    td #{ma.magiamgia}
+                    td #{ma.status}
+                    td #{ma.sotiengiam}
+                    td #{ma.createdAt}
+                    td #{ma.updatedAt}
+                    td 
+                      button.btn.btn-danger(type='button', style = "background: green;" )
+                        span.glyphicon.glyphicon
+                          a(href="/create-sale/"+ma.id, style = "color: white") Sửa 
+                    td 
+                      button.btn.btn-danger(type='button', onclick= "xoamagiamgia("+ma.id+")")
+                        span.glyphicon.glyphicon-remove
+                          |  Xóa
+    script.
+
+      //CHECK SALE
+      $(document).ready(function(){
+        $('#createsale').submit(function(){
+          var masp = $.trim($('#masp').val())
+          var sale = $.trim($('#sale').val())
+
+          var kiemtra = true
+
+          //check masp
+          if(masp == ""){
+            $('#error_masp').text("Vui lòng chọn sản phẩm")
+            kiemtra = false
+          }else{
+            $('#masp').text('')
+          }
+          //check sale
+          if(sale == ""){
+            $('#error_sale').text('Vui lòng nhập sale')
+            kiemtra = false
+          }else{
+            $('#sale').text('')
+          }
+          return kiemtra
+        })
+      })
+
+      //CHECK MAGIAMGIA
+      $(document).ready(function(){
+        $('#magiamgia').submit(function(){
+          var magiamgia = $.trim($('#magiamgia').val())
+          var sotiengiam = $.trim($('#sotiengiam').val())
+
+          var kiemtra = true
+          //check magiamgia
+          if(magiamgia == ''){
+            $('#error_magiamgia').text('Vui lòng nhập mã giảm giá')
+            kiemtra = false
+          }else{
+            $('#magiamgia').text('')
+          }
+          //check sotiengiam
+          if(sotiengiam == ''){
+            $('#error_sotiengiam').text('Vui lòng nhập mã giảm giá')
+            kiemtra = false
+          }else{
+            $('#sotiengiam').text('')
+          }
+          return kiemtra
+        })
+      })
+
+      //DELETE SALE
+      function xoasale(bookid, saleid){
+        var a = confirm('Bạn có chắc chắn muốn xóa')
+        if(a == true){
+          $.ajax({
+            type : "GET",
+            url: '/deletesale',
+            data: {
+              bookId : bookid,
+              saleId : saleid
+            },
+            success: function(res){
+              console.log(res)
+              $('#xoasale'+bookid).remove()
+            }
+          }) 
+        }else{
+          console.log('thoi')
+        }
+      }
+
+      //DELETE Magiamgia
+      function xoamagiamgia(id){
+        var a = confirm('Bạn có chắc chắn muốn xóa')
+        if(a == true){
+          $.ajax({
+            type : 'GET',
+            url : '/deletemagiamgia',
+            data: {
+              id : id
+            },
+            success: function(res){
+              $('#xoama'+id).remove()
+            }
+          })
+        }else{
+          console.log('vaoday')
+        }
+      }
+

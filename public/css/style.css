@@ -1,0 +1,143 @@
+.post {
+    width: 500px;
+    float: left;
+}
+.sidebar {
+    width: 200px;
+    float: right;
+}
+.post .email {
+    width: 300px;
+    float: left;
+}
+
+.post .phone {
+    width: 180px;
+    float: right;
+}
+
+/* .back {
+    float: left;
+    width: 300px;
+    margin-top: 60px;
+} */
+/* .up {
+    float: right;
+    /* width: 400px; */
+
+
+.bottom .sale {
+    float: right;
+    width: 150px;
+}
+.but {
+    margin-left: 470px;
+}
+
+.bottom {
+    margin-top: 10px;
+}
+
+.vnd {
+    float: right;
+    font-size:15px;
+    padding-top: 10px;
+    padding-left: 5px;
+    color :grey
+}
+#title {
+    text-align: center;
+}
+
+.buttons_added {
+    opacity:1;
+    display:inline-block;
+    display:-ms-inline-flexbox;
+    display:inline-flex;
+    white-space:nowrap;
+    vertical-align:top;
+}
+.is-form {
+    overflow:hidden;
+    position:relative;
+    background-color:#f9f9f9;
+    height:2.2rem;
+    width:1.9rem;
+    padding:0;
+    text-shadow:1px 1px 1px #fff;
+    border:1px solid #ddd;
+}
+.is-form:focus,.input-text:focus {
+    outline:none;
+}
+.is-form.minus {
+    border-radius:4px 0 0 4px;
+}
+.is-form.plus {
+    border-radius:0 4px 4px 0;
+}
+.input-qty {
+    background-color:#fff;
+    height:2.2rem;
+    text-align:center;
+    font-size:1rem;
+    display:inline-block;
+    vertical-align:top;
+    margin:0;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    border-left:0;
+    border-right:0;
+    padding:0;
+}
+.input-qty::-webkit-outer-spin-button,.input-qty::-webkit-inner-spin-button {
+    -webkit-appearance:none;
+    margin:0;
+}
+
+.cost{
+    width: 60%;
+    float: left;
+}
+.sale{
+    width: 30%;
+    float: right;
+    font-size: 10px;
+    padding-top: 5px;
+}
+
+
+.salei {
+    padding-left: 10px;
+    font-size: 25px;
+}
+.salea {
+    padding-left: 10px;
+    font-size: 25px;
+    color :red
+}
+
+.cart {
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    padding-left: 20px;
+}
+.lii {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+.lii a {
+    color:gray;
+}
+
+.error {
+    color : rgb(132, 53, 52);
+}
+.chiatable{
+    width: 50%;
+}
+
+.carta{
+    /* width: 50%; */
+}

@@ -1,0 +1,127 @@
+extends ../views/layout/layout.pug
+
+block content
+  section.content
+    .container-fluid
+      .row
+        .col-md-4
+          .card.card-primary
+            .card-header
+              h3.card-title Tạo sản phẩm 
+            form(action = '/create-book', method = 'POST' enctype="multipart/form-data")
+              .card-body
+                .form-group 
+                  label Thể loại
+                  if(category && category.length)
+                    select.custom-select(name='loaibookId')
+                      option(value="") Lựa chọn thể loại
+                      each ca in category
+                        option(value =ca.id) !{ca.namecategory}
+                .form-group
+                  label Mã Sản Phẩm
+                  input.form-control(type='text',name = 'masp' placeholder='Nhập mã Sản Phẩm')
+                .form-group
+                  label Hình ảnh sản phẩm
+                  input.form-control(type='file',name = 'image')
+                .form-group
+                  label Tiêu đề sản phẩm
+                  input#exampleInputPassword1.form-control(type='text',name = 'title' placeholder='Nhập tiêu đề sản phẩm')
+                .form-group 
+                  label Tác giả
+                  input#exampleInputPassword1.form-control(type='text',name = 'author' placeholder='Nhập tác giả')
+                .form-group 
+                  label Giá tiền
+                  input#exampleInputPassword1.form-control(type='text',name = 'cost' placeholder='Nhập giá tiền')
+                .form-group 
+                  label Số lượng
+                  input#exampleInputPassword1.form-control(type='text',name = 'soluongton' placeholder='Nhập số lượng')
+
+              .card-footer
+                button.btn.btn-primary(type='submit') Tạo sản phẩm     
+        .col-md-8
+          .card.card-primary
+            if(listbook && listbook.length)
+              table.table.table-hover
+                thead
+                tr
+                  th ID
+                  th Mã Sản Phẩm
+                  th Hình ảnh sản phẩm
+                  th Tiêu đề sản phẩm
+                  th Tác giả
+                  th Thể loại
+                  th Giá tiền
+                  th Ngày tạo
+                  th Ngày sửa
+                  th
+                  th
+                tbody
+                each a in listbook
+                  each i in a.books
+                    tr(id = "xoabooks"+i.id)
+                      td #{i.id}
+                      td #{i.masp}
+                      td 
+                        img(src="/uploads/"+i.image, alt="", style = "width : 50px; height: 30px")
+                      td #{i.title}
+                      td #{i.author}
+                      td #{a.namecategory}
+                      td #{i.cost}
+                      //- td #{i.sale}
+                      td #{i.createdAt}
+                      td #{i.updatedAt}
+                      td 
+                        button.btn.btn-danger(type='button', style = "background: green;" )
+                          span.glyphicon.glyphicon-edit
+                          |  Sửa 
+                      td 
+                        button.btn.btn-danger(type='button', onclick = "xoabook("+i.id+")")
+                          span.glyphicon.glyphicon-remove
+                          |  Xóa 
+              .card-footer
+                nav(aria-label='Contacts Page Navigation')
+                  ul.pagination.justify-content-center.m-0
+                    - for(var i = 1 ; i <= pages; i++)
+                      li.page-item.active 
+                        a.page-link(href="/create-book?page="+i) #{i}
+
+    script.
+
+      //Delete book
+      function xoabook(id){
+        var a = confirm('Bạn có chắc chắn muốn xóa')
+        if(a == true){
+          $.ajax({
+            type : 'GET',
+            url : '/deletebook',
+            data :{
+              bookid : id
+            },
+            success : function(res){
+              console.log(res)
+              $('#xoabooks'+id).remove()
+            }
+          })
+        }else{
+          console.log('thoi')
+        }
+      }
+
+      //Delete theloai
+      function xoatheloai(id){
+        var a = confirm('Bạn có chắc chắn muốn xóa')
+        if(a == true){
+          $.ajax({
+            type: 'GET',
+            url : '/deletecategory',
+            data :{
+              id : id
+            },
+            success: function(res){
+              $('#xoatl'+id).remove()
+            }
+          })
+        }else{
+          console.log('thi thoi')
+        }
+      }

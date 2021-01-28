@@ -1,0 +1,40 @@
+extends ../views/layout/layout.pug
+
+block content
+    h2 Thông tin sản phẩm
+    if(infobook && infobook.length)
+        table.table.table-hover.text-nowrap
+            thead
+                tr
+                    th User đặt hàng
+                    th Sản phẩm
+                    th Mã sản phẩm
+                    th Nơi vận chuyển
+                    th Đơn giá
+                    th Số lượng
+                    th Thành tiền
+            tbody
+                - var tongtien = 0
+                //- each a in infobook
+                //-     each i in a.bills
+                    - var tongtien = tong + a.cost * i.soluongdat
+                - for(var a = 0; a < infobook.length; a++)
+                    - for(var i= 0;i < infobook[a].bills.length; i++)
+                        - for(var add = 0; add < infoaddress.length; add++)
+                            tr
+                                td #{infobook[a].bills[i].userId} - #{infoaddress[add].name}
+                                td #{infobook[a].title}
+                                td #{infobook[a].id}
+                                td Địa chỉ nhận hàng : +84 #{infoaddress[add].phonenumber} - #{infoaddress[add].address}  
+                                td #{infobook[a].cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                                td #{infobook[a].bills[i].soluongdat}
+                                td #{(infobook[a].cost * infobook[a].bills[i].soluongdat).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                        - var tongtien = tongtien + Number(infobook[a].cost) * Number(infobook[a].bills[i].soluongdat)
+                tr
+                    td &nbsp;
+                    td &nbsp;
+                    td &nbsp;
+                    td &nbsp;
+                    td &nbsp;
+                    td Tổng tiền :
+                    td #{tongtien.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} VND

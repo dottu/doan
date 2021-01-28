@@ -1,0 +1,101 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  title AdminLTE 3 | Log in
+  // Tell the browser to be responsive to screen width
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  // Font Awesome
+  link(rel='stylesheet' href='/plugins/fontawesome-free/css/all.min.css')
+  // Ionicons
+  link(rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
+  // icheck bootstrap
+  link(rel='stylesheet' href='/plugins/icheck-bootstrap/icheck-bootstrap.min.css')
+  // Theme style
+  link(rel='stylesheet' href='/dist/css/adminlte.min.css')
+  // Google Font: Source Sans Pro
+  link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700' rel='stylesheet')
+  link(rel="stylesheet" href="/css/style.css")
+body(class="hold-transition login-page") 
+.login-box
+  .login-logo
+    a(href='../../index2.html')
+      //- b Admin
+      //- | LTE
+  .card
+    .card-body.login-card-body
+      p.login-box-msg Đăng nhập
+      form(action='/login' method='POST', id= "login")
+        .input-group.mb-3
+          input.form-control(type='text', name = 'phonenumber' placeholder='Số điện thoại' id="phonenumber")
+          .input-group-append
+            .input-group-text
+              span.fas.fa-envelope
+        span.error(id= "errorphonenumber")
+        .input-group.mb-3
+          input.form-control(type='password', name = 'password' placeholder='Mật khẩu từ 6 đến 32 ký tự',id = "password")
+          .input-group-append
+            .input-group-text
+              span.fas.fa-lock
+        span.error(id = "errorpassword") 
+        - if (messages.loi)
+          .message.loi
+            span.error= messages.loi
+        button.btn.btn-primary.btn-block(type='submit') Sign In
+      //- p.mb-1
+      //-   a(href='#') I forgot my password
+      p.login-box-msg
+        a.text-center(href='Sign-up') Tạo tài khoản
+    // /.login-card-body
+// /.login-box
+// jQuery Cannot read property 'phonenumber' of undefined
+// jQuery
+script(src='/plugins/jquery/jquery.min.js')
+script(src='../../plugins/bootstrap/js/bootstrap.bundle.min.js')
+// AdminLTE App
+script(src='../../dist/js/adminlte.min.js')
+
+
+
+script.
+
+  $(document).ready(function(){
+    $('#login').submit(function(){
+
+      var sdt = $.trim($('#phonenumber').val())
+      var matkhau = $.trim($('#password').val())
+
+      console.log("sdt", sdt)
+      console.log('matkhau', matkhau)
+
+      var kiemtra = true
+
+      //- console.log('oekea', user)
+      //check sdt
+      if(sdt == ""){
+        $('#errorphonenumber').text('Vui lòng nhập số điện thoại')
+        $('#phonenumber').css('border', '1px solid rgb(132, 53, 52)')
+        kiemtra = false
+      }else(
+        $('#phonenumber').text('')
+      )
+      //check matkhau
+      if(matkhau == ""){
+        $('#errorpassword').text('Vui lòng nhập mật khẩu từ 6 đến 32 ký tự ')
+        $('#password').css('border', '1px solid rgb(132, 53, 52)')
+        kiemtra = false
+      }else{
+        if(matkhau.length < 6 || matkhau.length > 32){
+          $('#errorpassword').text('độ dài mật khẩu từ 6 đến 32 ký tự ')
+          $('#password').css('border', '1px solid rgb(132, 53, 52)')
+          kiemtra = false
+        }
+        else{
+          $('#errorpassword').text('')
+        }
+      }
+      return kiemtra
+    })
+  })
+
+

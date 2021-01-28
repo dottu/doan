@@ -1,0 +1,133 @@
+extends ../views/layout/layout.pug
+block content
+  section.content
+    .container-fluid
+      .row
+        .col-md-6
+          .card.card-primary
+            .card-header
+              h3.card-title Tạo tài khoản
+            form(action = '/sign-up', method = 'POST',id = "sign-up")
+              .card-body
+                .form-group
+                  label(for='exampleInputPhonenumber') Số điện thoại
+                  input.form-control(type='text',name = 'phonenumber' placeholder='Nhập Số điện thoại', id = "phonenumber")
+                  - if (messages.loi)
+                    .message.loi
+                      span.error= messages.loi
+                  span.error(id = "error_phonenumber")
+                .form-group
+                  label(for='exampleInputPassword1') Mật khẩu
+                  input.form-control(type='password',name = 'password' placeholder='Nhập Mật khẩu' id="pass")
+                  span.error(id = "error_password")
+                .form-group
+                  label(for='exampleInputConfrimPassword1') Nhập lại mật khẩu
+                  input.form-control(type='password',name = 'confirmpassword' placeholder='Nhập lại mật khẩu', id ="confirm")
+                  span.error(id = "error_confirm")
+              .card-footer
+                button.btn.btn-primary(type='submit') Tạo tài khoản
+
+          if(users && users.length)
+            table.table.table-hover.card-primary
+              thead
+              tr
+                th ID
+                th Số điện thoại
+                th Mật khẩu
+                th Ngày tạo
+                th Ngày sửa
+                th 
+                th
+              tbody
+              each a in users
+                tr(id='xoa'+a.id)
+                  td #{a.id}
+                  td #{a.phonenumber}
+                  td #{a.password}
+                  td #{a.createdAt}
+                  td #{a.updatedAt}
+                  td 
+                    button.btn.btn-danger(type='button', style = "background: green;" )
+                      span.glyphicon.glyphicon-edit
+                        |  Sửa
+                  td 
+                    button.btn.btn-danger(type='button',onclick = "a("+a.id+")")
+                      span.glyphicon.glyphicon-remove
+                        |  Xóa 
+
+      script.
+        //DELETE
+        function a(id){
+          console.log(id)
+          var a = confirm('Bạn có chắc chắn muốn xóa')
+          if(a == true){
+            $.ajax({
+              type: 'GET',
+              url : '/deleteuser',
+              data: {
+                id: id
+              },
+              success: function(res){
+                console.log(res)
+                $("#xoa"+id).remove()
+              }
+            })
+          }else{
+            console.log("vaoday")
+          }
+
+        }
+        $(document).ready(function(){
+          $('#sign-up').submit(function(){
+            var phone = $.trim($('#phonenumber').val())
+            var password = $.trim($('#pass').val())
+            var confirmpassword = $.trim($('#confirm').val())
+
+            var kiemtra = true
+            //check phone
+            if(phone == ""){
+              $('#error_phonenumber').text('Vui lòng nhập số điện thoại')
+          //- border: 1px solid rgb(132, 53, 52)
+            $('#phonenumber').css('border', '1px solid rgb(132, 53, 52)')
+            kiemtra = false
+            }
+            else{
+              $('#phonenumber').text('')
+            }
+            //check matkhau
+            if(password == ""){
+              $('#error_password').text('Vui lòng nhập mật khẩu')
+              $('#pass').css('border', '1px solid rgb(132, 53, 52)')
+              kiemtra = false
+            }
+            else{
+              if(password.length < 6   || password.length > 32){
+                $('#error_password').text('Bạn cần nhập mật khẩu từ 6 đến 32 ký tự')
+                $('#pass').css('border', '1px solid rgb(132, 53, 52)')
+                kiemtra = false
+              }
+              else{
+                $('#pass').text('')
+              }
+            }
+            //check confim
+            if(confirmpassword == ""){
+              $('#error_confirm').text('Vui lòng nhập lại mật khẩu')
+              $('#confirm').css('border', '1px solid rgb(132, 53, 52)')
+              kiemtra = false
+            }
+            else{
+              //- $('#error_confirm').text('Mật khẩu nhập chưa chính xác')
+              if(confirmpassword && confirmpassword != password){
+                $('#error_confirm').text('Mật khẩu nhập chưa chính xác')
+                $('#confirm').css('border', '1px solid rgb(132, 53, 52)')
+                kiemtra = false
+              }
+              else{
+                $('#confirm').text('')
+              }
+            }
+            return kiemtra
+          })
+
+        })

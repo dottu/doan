@@ -1,0 +1,48 @@
+extends ../views/layout/layout.pug
+block content
+    section.content
+        .container-fluid
+            .row
+                .col-md-6
+                    .card.card-primary
+                        .card-header
+                            h3.card-title Tạo thể loại
+                        form(action = '/create-category', method = 'POST')
+                        .card-body
+                            .form-group 
+                                label Tên thể loại
+                                input#exampleInputPassword1.form-control(type='text',name = 'namecategory' placeholder='Nhập thể loại')
+                        .card-footer
+                            button.btn.btn-primary(type='submit') Tạo thể loại    
+                .col-md-6
+                    .card.card-primary
+                        if(infobook && infobook.length)
+                            table.table.table-hover
+                                thead
+                                    tr
+                                        th ID
+                                        th Thể loại
+                                        th Ngày tạo
+                                        th Ngày sửa
+                                        th
+                                        th
+                                tbody
+                                    each a in infobook
+                                        tr(id = 'xoatl'+a.id)
+                                        td #{a.id}
+                                        td #{a.namecategory}
+                                        td #{a.createdAt}
+                                        td #{a.updatedAt}
+                                        td 
+                                            button.btn.btn-danger(type='button', style = "background: green;" )
+                                                span.glyphicon.glyphicon-edit
+                                                    |  Sửa 
+                                        td 
+                                            button.btn.btn-danger(type='button', onclick= "xoatheloai("+a.id+")")
+                                                span.glyphicon.glyphicon-remove
+                                                    |  Xóa
+                            .card-footer
+                                nav(aria-label='Contacts Page Navigation')
+                                    ul.pagination.justify-content-center.m-0
+                                        li.page-item.active 
+                                            a.page-link(href="/?page=1") 1
